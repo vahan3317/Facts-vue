@@ -1,0 +1,13 @@
+{
+    "appTitle": "Cat Facts",
+    "likedMessage": "You liked it!",
+    "howManyRows":"how many post you want to see?", 
+    "dislikedMessage": "You disliked it!",
+    "okButton": "OK",
+    "changeLanguageButton":"Change To Russian" ,
+    "tableHeaders": {
+      "text": "Text",
+      "type": "Type",
+      "id": "ID"
+    }
+  }

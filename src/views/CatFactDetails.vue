@@ -1,44 +1,50 @@
 <template>
-<v-card-title class="c ">
-     Details Of ID: <span class="text">{{ catFact ? catFact._id : '' }}</span>
-      </v-card-title>
+  <v-card-title class="c">
+    {{ $t('detailsOfId') }} <span class="text">{{ catFact ? catFact._id : '' }}</span>
+  </v-card-title>
+  <router-link to="/" class="router">
+    <v-btn icon class="d-flex justify-center align-center mx-auto">
+      <v-icon>mdi-home</v-icon>
+    </v-btn>
+  </router-link>
   <v-container>
-    <v-card class='cat-fact-details'>
-      <v-card-title>
-        {{ catFact ? catFact.text : '' }}
-      </v-card-title>
-      <v-card-subtitle>
-        <span v-if="catFact">{{ catFact.user.name.first }} {{ catFact.user.name.last }}</span>
-        <v-spacer></v-spacer>
-        <v-chip label v-if="catFact">{{ catFact.type }}</v-chip>
-      </v-card-subtitle>
+    <v-card class="cat-fact-details">
+      <div class="div">
+        <v-card-title>
+          {{ catFact ? catFact.text : '' }}
+        </v-card-title>
+
+        <v-card-subtitle>
+          <span v-if="catFact">{{ $t('userFirstName') }} {{ catFact.user.name.first }} {{ $t('userLastName') }} {{ catFact.user.name.last }}</span>
+          <v-spacer></v-spacer>
+          <v-chip label v-if="catFact">{{ $t('catFactType') }} {{ catFact.type }}</v-chip>
+        </v-card-subtitle>
+      </div>
       <v-card-text>
-       <div >
-        <v-row class="c" >
-          <v-col cols="7 "  >
-            <v-icon color="green" v-if="catFact && catFact.status.verified">mdi-check-circle-outline</v-icon>
-            
-              <v-card-title v-else class="load">
-                 loading...
-      </v-card-title>
-            <span v-if="catFact">{{ catFact.status.sentCount }} Sent</span>
-          </v-col>
-          <v-col cols="4">
-            <span v-if="catFact">{{ catFact.source }}</span>
-          </v-col>
-          <v-col cols="2">
-            <span v-if="catFact">{{ formatDate(catFact.updatedAt) }}</span>
-          </v-col>
-        </v-row>
+        <div>
+          <v-row>
+            <v-col cols="">
+              <v-icon color="green" v-if="catFact && catFact.status.verified">mdi-check-circle-outline</v-icon>
+
+              <div v-else class="d-flex justify-center">
+                <v-progress-circular indeterminate color="primary"></v-progress-circular>
+              </div>
+              <span v-if="catFact" class="load">{{ catFact.status.sentCount }} {{ $t('sentCount') }}</span>
+              <span v-if="catFact" v-text="$t('catFactSource')" class="red"></span>
+            </v-col>
+
+            <span v-if="catFact" class="updated">{{ $t('updated') }} {{ catFact.updatedAt }}</span>
+            <span v-if="catFact" class="updated">{{ $t('created') }}{{ catFact.createdAt }}</span>
+          </v-row>
         </div>
       </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <span v-if="catFact">{{ formatDate(catFact.createdAt) }}</span>
-      </v-card-actions>
+
     </v-card>
   </v-container>
 </template>
+
+
+
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { RouteParams } from 'vue-router';
@@ -106,6 +112,44 @@ padding-top:22px;
 }
 .text{
   color:green
+}
+.red{
+  background:#e4eaeb;
+  
+ border-radius:2px;
+ display:flex;
+ width:100px;
+ height:32px;
+ margin :10px auto;
+ justify-content:center;
+ align-items:center;
+}
+.red:hover{
+  box-shadow:1px 1px 1px 1px lightGray;
+}
+.div{
+    background:#e6dfdf;
+  
+ 
+ border-radius:4px;
+ display:flex-row;
+ padding-bottom:12px;
+ width:80%;
+ 
+ margin :10px auto;
+ justify-content:center;
+ align-items:center;
+ 
+}
+
+.div:hover{
+  box-shadow:1px 1px 1px 1px lightgray;
+}
+
+.router{
+  
+  text-decoration: none;
+
 }
 
 .card-animation {
@@ -188,6 +232,12 @@ padding-top:22px;
   width:100%;
   display:flex;
   justify-content:center;
+}
+.updated{
+  width:100%;
+  text-align:center;
+  margin-bottom:22px;
+  font-weight:bold;
 }
 
 </style>

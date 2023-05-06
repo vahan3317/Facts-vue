@@ -1,12 +1,25 @@
 <template>
   <div class="neomorphism">
-  
-    <v-select v-model="selectedRowsPerPage" :items="rowsPerPageOptions" label="Rows per page" class='itemsPer'></v-select>
-  
-    <v-data-table v-if="!isLoading" :headers="headers" :items="visibleCatFacts" class="elevation-2" disable-pagination hide-default-footer>
-      <template v-for="header in headers" v-slot:[`header.${header.value}`]="{ header }">
-        <div class="header-text">{{ header.text }}</div>
+    <button @click="changeLanguage" class="btn-ch">{{ $t('changeLanguageButton') }}</button>
+    <v-select v-model="selectedRowsPerPage" :items="rowsPerPageOptions" :label="$t('howManyRows')" class="items-per-page itemsPer">
+      <template #selection="{ item }" class="">
+        <div class="d-flex align-center">
+          <span class="mr-2">{{ $t('howManyRows') }}</span>
+        </div>
+        
       </template>
+      
+    </v-select>
+   
+    
+    <v-data-table v-if="!isLoading" :headers="headers" :items="visibleCatFacts" class="elevation-2theader" disable-pagination hide-default-footer>
+      <thead>
+        <tr>
+          <th>{{ $t('tableHeaders.text') }}</th>
+          <th>{{ $t('tableHeaders.type') }}</th>
+          <th>{{ $t('tableHeaders.id') }}</th>
+        </tr>
+      </thead>
       <tr v-for="(item, index) in visibleCatFacts" :key="item._id" :class="{'grey lighten-2': index % 2 === 0}" class="table-row-animation">
         <td><router-link :to="`/details/${item._id}`" class="router">{{ item.text }}</router-link></td>
         <td>{{ item.type }}</td>
@@ -17,7 +30,6 @@
     <div v-else class="d-flex justify-center">
       <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </div>
-      
   </div>
 </template>
 
@@ -25,7 +37,8 @@
 import { defineComponent, ref, computed, watchEffect } from 'vue';
 import { VDataTable } from 'vuetify/labs/VDataTable';
 import { VSelect } from 'vuetify/lib/components/VSelect/VSelect'
-
+import { useI18n } from 'vue-i18n';
+import i18n from './i18n/index';
 
 import axios from 'axios';
 
@@ -42,6 +55,13 @@ export default defineComponent({
     VSelect,
   },
   setup() {
+    const { t, locale } = useI18n();
+
+    const changeLanguage = () => {
+      const newLocale = locale.value === 'en' ? 'ru' : 'en';
+      locale.value = newLocale;
+    };
+
     const catFacts = ref<CatFact[]>([]);
     const isLoading = ref<boolean>(true);
     const selectedRowsPerPage = ref<number>(2);
@@ -78,7 +98,7 @@ export default defineComponent({
       return [2, 4, catFacts.value.length];
     });
 
-    return { catFacts, isLoading, selectedRowsPerPage, visibleCatFacts, rowsPerPageOptions };
+    return { catFacts, isLoading, selectedRowsPerPage, changeLanguage, visibleCatFacts, rowsPerPageOptions };
   },
   computed: {
     headers(): { text: string; value: string }[] {
@@ -90,6 +110,7 @@ export default defineComponent({
     },
   },
 });
+
 </script>
 
 
@@ -97,11 +118,15 @@ export default defineComponent({
 <style scoped>
 /* Neomorphism styles */
 .neomorphism {
-  background-color: #d4d4d4;
+  background-color: lightblue;
   box-shadow: 3px 3px 7px #bfbfbf, -3px -3px 7px #ffffff;
   border-radius: 12px;
   padding: 100px;
+  height:100%;
   
+}
+.theader{
+  text-align: center;
 }
 
 /* Table styles */
@@ -118,8 +143,11 @@ table {
 .itemsPer{
   width:100%;
   display:flex;
-  justify-content:end;
+  justify-content:center;
+ 
   margin-bottom:6px;
+ 
+  
 }
 
 table th, table td {
@@ -178,6 +206,25 @@ table th {
 @keyframes slide-in {
   from { opacity: 0; transform: translateX(-20px); }
   to { opacity: 1; transform: translateX(0); }
+}
+.btn-ch {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: lightGray;
+  color: #000;
+  rounded:4px;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.btn-ch:hover {
+  background-color: #000;
+  color: #fff;
 }
 
 .v-data-table__wrapper tr:nth-child(even) {
