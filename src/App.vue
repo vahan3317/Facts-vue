@@ -4,6 +4,7 @@
       <v-app-bar-title>
         <router-link to="/" class="router">CatFacts <v-icon color="primary">mdi-cat</v-icon> </router-link>
       </v-app-bar-title>
+      <button @click="changeLanguage" class="btn-ch">{{ $t('changeLanguageButton') }}</button>
       <v-btn icon @click="toggleLike">
         <v-icon :color="isLiked ? 'red' : ''">mdi-heart</v-icon>
       </v-btn>
@@ -32,17 +33,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+
+import i18n from './i18n/index';
 
 export default defineComponent({
   name: 'App',
   setup() {
+    const { t, locale } = useI18n();
+
+    const selectedLanguage = ref(localStorage.getItem('selectedLanguage') || 'en');
     const isLiked = ref(false);
     const showDialog = ref(false);
-    const selectedLanguage = ref('en');
 
-    const i18n = useI18n();
+    const changeLanguage = () => {
+      const newLocale = locale.value === 'en' ? 'ru' : 'en';
+      locale.value = newLocale;
+      selectedLanguage.value = newLocale;
+      localStorage.setItem('selectedLanguage', newLocale);
+    };
 
     const toggleLike = () => {
       if (isLiked.value) {
@@ -52,10 +62,6 @@ export default defineComponent({
       }
       isLiked.value = !isLiked.value;
       showDialog.value = true;
-    };
-
-    const changeLanguage = () => {
-      i18n.global.locale = selectedLanguage.value;
     };
 
     if (localStorage.getItem('isLiked') === 'true') {
@@ -68,6 +74,11 @@ export default defineComponent({
       // Add more language options as needed
     ];
 
+    // Watch for changes in selectedLanguage and update the locale
+    watch(selectedLanguage, (newLanguage) => {
+      locale.value = newLanguage;
+    });
+
     return {
       isLiked,
       showDialog,
@@ -79,7 +90,6 @@ export default defineComponent({
   },
 });
 </script>
-
 
 
 

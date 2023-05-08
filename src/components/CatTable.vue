@@ -1,6 +1,6 @@
 <template>
   <div class="neomorphism">
-    <button @click="changeLanguage" class="btn-ch">{{ $t('changeLanguageButton') }}</button>
+ 
     <v-select v-model="selectedRowsPerPage" :items="rowsPerPageOptions" :label="$t('howManyRows')" class="items-per-page itemsPer">
       <template #selection="{ item }" class="">
         <div class="d-flex align-center">

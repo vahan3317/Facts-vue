@@ -1,25 +1,30 @@
 {
-    "detailsOfId": "Детали ID:",
-    "updated": "Обновлено:",
-    "created": "Создано:",
-    "verified": "Проверено",
-    "sentCount": "Отправлено",
-    "loading": "Загрузка...",
-    "appTitle":"Факты о Котов", 
-    "changeLanguageButton":" На английский",
-    "howManyRows": "Сколько вы хотите увидеть?",
-    "tableHeaders": {
-      "text": "Текст",
-      "type": "Тип",
-      "id": "Идентификатор"
-    },
-    "catFacts": {
-      "textTranslation1": "Перевод текста 1",
-      "textTranslation2": "Перевод текста 2",
-      "textTranslation3": "Перевод текста 3",
-      "typeTranslation1": "Перевод типа 1",
-      "typeTranslation2": "Перевод типа 2",
-      "typeTranslation3": "Перевод типа 3"
-    }
-  }
-  
+  "detailsOfId": "Детали ID:",
+"updated": "Обновлено:",
+"created": "Создано:",
+"verified": "Проверено:",
+"sentCount": "Отправлено:",
+"userFirstName": "Имя:",
+"cardTitle": "Заголовок карточки:",
+"catFactType": "Вид пользователя:",
+"loading": "Загрузка...",
+"appTitle": "Факты о Котов",
+"changeLanguageButton": "Aнглийский",
+"howManyRows": "Сколько вы хотите увидеть?",
+"tableHeaders": {
+"text": "Текст",
+"type": "Тип",
+"id": "Идентификатор"
+},
+"catFacts": {
+"textTranslation1": "Перевод текста 1",
+"textTranslation2": "Перевод текста 2",
+"textTranslation3": "Перевод текста 3",
+"typeTranslation1": "Перевод типа 1",
+"typeTranslation2": "Перевод типа 2",
+"typeTranslation3": "Перевод типа 3"
+},
+"catFactText": "Текст факта о коте"
+
+
+}

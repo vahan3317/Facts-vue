@@ -1,6 +1,6 @@
 <template>
   <v-card-title class="c">
-    {{ $t('detailsOfId') }} <span class="text">{{ catFact ? catFact._id : '' }}</span>
+    {{ $t('detailsOfId') }} : <span class="text">{{ catFact ? catFact._id : '' }}</span>
   </v-card-title>
   <router-link to="/" class="router">
     <v-btn icon class="d-flex justify-center align-center mx-auto">
@@ -11,7 +11,7 @@
     <v-card class="cat-fact-details">
       <div class="div">
         <v-card-title>
-          {{ catFact ? catFact.text : '' }}
+          {{ catFact ? getTranslatedText('catFactText', catFact.text) : '' }}
         </v-card-title>
 
         <v-card-subtitle>
@@ -34,18 +34,14 @@
             </v-col>
 
             <span v-if="catFact" class="updated">{{ $t('updated') }} {{ catFact.updatedAt }}</span>
-            <span v-if="catFact" class="updated">{{ $t('created') }}{{ catFact.createdAt }}</span>
+            <span v-if="catFact" class="updated">{{ $t('created') }} {{ catFact.createdAt }}</span>
           </v-row>
         </div>
       </v-card-text>
-
     </v-card>
   </v-container>
 </template>
-
-
-
-<script lang="ts">
+<script lang ="ts">
 import { defineComponent } from 'vue';
 import { RouteParams } from 'vue-router';
 import axios, { AxiosError } from 'axios';
@@ -75,24 +71,39 @@ interface CatFact {
 
 export default defineComponent({
   name: 'CatFactDetails',
-  data: () => ({
-    catFact: null as CatFact | null,
-    error: '',
-  }),
-  async mounted() {
+  data() {
+    return {
+      catFact: null as CatFact | null,
+      error: '',
+      currentLanguage: 'en',
+    };
+  },
+  mounted() {
+    
     const { id } = this.$route.params as RouteParams<{ id: string }>;
     try {
-      const response = await axios.get<CatFact>(`https://cat-fact.herokuapp.com/facts/${id}`);
-      this.catFact = response.data;
+      axios.get<CatFact>(`https://cat-fact.herokuapp.com/facts/${id}`)
+        .then((response) => {
+          this.catFact = response.data;
+        })
+        .catch((error) => {
+          if (axios.isAxiosError(error)) {
+            const axiosError = error as AxiosError;
+            this.error = axiosError.message;
+            console.error(axiosError.toJSON());
+          } else {
+            console.error(error);
+          }
+        });
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        this.error = axiosError.message;
-        console.error(axiosError.toJSON());
-      } else {
-        console.error(error);
-      }
+      console.error(error);
     }
+  },
+  methods: {
+    getTranslatedText(key: string, fallbackText: string) {
+      const translation = this.$t(key) as string;
+      return this.currentLanguage === 'ru' ? translation : fallbackText;
+    },
   },
 });
 </script>
